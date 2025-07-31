@@ -1,3 +1,4 @@
+
 import { MoreHorizontal, ExternalLink, FileText } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -21,6 +22,8 @@ import { format } from 'date-fns';
 
 interface ComponentCardsProps {
   components: Component[];
+  onEdit: (component: Component) => void;
+  onDelete: (componentId: string) => void;
 }
 
 function StockStatusBadge({ quantity, lowStockThreshold }: { quantity: number; lowStockThreshold: number }) {
@@ -33,7 +36,7 @@ function StockStatusBadge({ quantity, lowStockThreshold }: { quantity: number; l
   return <Badge variant="default" className="bg-green-500">In Stock</Badge>;
 }
 
-export default function ComponentCards({ components }: ComponentCardsProps) {
+export default function ComponentCards({ components, onEdit, onDelete }: ComponentCardsProps) {
   return (
     <div className="grid gap-4 sm:grid-cols-2">
       {components.map((component) => (
@@ -51,7 +54,7 @@ export default function ComponentCards({ components }: ComponentCardsProps) {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem>Edit</DropdownMenuItem>
+                  <DropdownMenuItem onSelect={() => onEdit(component)}>Edit</DropdownMenuItem>
                   <DropdownMenuItem>View Logs</DropdownMenuItem>
                   <a href={component.datasheetUrl} target="_blank" rel="noopener noreferrer">
                     <DropdownMenuItem>
@@ -60,7 +63,12 @@ export default function ComponentCards({ components }: ComponentCardsProps) {
                       <ExternalLink className="ml-auto h-3 w-3" />
                     </DropdownMenuItem>
                   </a>
-                  <DropdownMenuItem className="text-destructive focus:text-destructive">Delete</DropdownMenuItem>
+                  <DropdownMenuItem 
+                    className="text-destructive focus:text-destructive"
+                    onSelect={() => onDelete(component.id)}
+                  >
+                    Delete
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>

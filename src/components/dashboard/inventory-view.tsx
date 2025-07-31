@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -7,14 +8,13 @@ import ComponentCards from './component-cards';
 
 interface InventoryViewProps {
   components: Component[];
+  onEdit: (component: Component) => void;
+  onDelete: (componentId: string) => void;
 }
 
-export default function InventoryView({ components }: InventoryViewProps) {
+export default function InventoryView({ components, onEdit, onDelete }: InventoryViewProps) {
   const isMobile = useIsMobile();
-  // In a real app, filtering logic would be implemented here using useState and useEffect
-  // For this UI-focused implementation, we pass all components down
-  const filteredComponents = components;
-
+  
   if (isMobile === undefined) {
     // Skeleton loader while determining screen size
     return (
@@ -27,8 +27,8 @@ export default function InventoryView({ components }: InventoryViewProps) {
   }
 
   return isMobile ? (
-    <ComponentCards components={filteredComponents} />
+    <ComponentCards components={components} onEdit={onEdit} onDelete={onDelete} />
   ) : (
-    <ComponentTable components={filteredComponents} />
+    <ComponentTable components={components} onEdit={onEdit} onDelete={onDelete} />
   );
 }

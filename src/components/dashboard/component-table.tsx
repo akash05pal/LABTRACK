@@ -1,3 +1,4 @@
+
 import { MoreHorizontal, FileText, ExternalLink } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -24,6 +25,8 @@ import { format } from 'date-fns';
 
 interface ComponentTableProps {
   components: Component[];
+  onEdit: (component: Component) => void;
+  onDelete: (componentId: string) => void;
 }
 
 function StockStatus({ quantity, lowStockThreshold }: { quantity: number; lowStockThreshold: number }) {
@@ -36,7 +39,7 @@ function StockStatus({ quantity, lowStockThreshold }: { quantity: number; lowSto
   return <Badge variant="default" className="bg-green-500 hover:bg-green-600">In Stock</Badge>;
 }
 
-export default function ComponentTable({ components }: ComponentTableProps) {
+export default function ComponentTable({ components, onEdit, onDelete }: ComponentTableProps) {
   return (
     <Card>
       <CardContent className="p-0">
@@ -87,8 +90,7 @@ export default function ComponentTable({ components }: ComponentTableProps) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                      <DropdownMenuItem>View Details</DropdownMenuItem>
-                      <DropdownMenuItem>Edit</DropdownMenuItem>
+                      <DropdownMenuItem onSelect={() => onEdit(component)}>Edit</DropdownMenuItem>
                       <DropdownMenuItem>View Logs</DropdownMenuItem>
                       <a href={component.datasheetUrl} target="_blank" rel="noopener noreferrer">
                         <DropdownMenuItem>
@@ -98,7 +100,10 @@ export default function ComponentTable({ components }: ComponentTableProps) {
                         </DropdownMenuItem>
                       </a>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem className="text-destructive focus:text-destructive focus:bg-destructive/10">
+                      <DropdownMenuItem 
+                        className="text-destructive focus:text-destructive focus:bg-destructive/10"
+                        onSelect={() => onDelete(component.id)}
+                      >
                         Delete
                       </DropdownMenuItem>
                     </DropdownMenuContent>
