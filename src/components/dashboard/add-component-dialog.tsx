@@ -31,7 +31,7 @@ import type { Component, ComponentCategory } from "@/lib/types";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
-const categories: ComponentCategory[] = ['Resistors', 'Capacitors', 'ICs', 'Sensors', 'Dev Boards', 'Other'];
+const categories: ComponentCategory[] = ['Fencing', 'Gates', 'Hardware', 'Materials', 'Tools', 'Other'];
 
 const formSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters long."),
@@ -94,15 +94,15 @@ export function AddComponentDialog({ onAddComponent }: AddComponentDialogProps) 
       <DialogTrigger asChild>
         <Button>
           <Plus className="mr-2 h-4 w-4" />
-          Add Component
+          Add Item
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Add New Component</DialogTitle>
+          <DialogTitle>Add New Inventory Item</DialogTitle>
           <DialogDescription>
-            Fill in the details below to add a new component.
-          </DialogDescription>
+            Fill in the details below to add a new item.
+          </Dialog-description>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4 py-4 max-h-[70vh] overflow-y-auto pr-6">
@@ -113,7 +113,7 @@ export function AddComponentDialog({ onAddComponent }: AddComponentDialogProps) 
                 <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-1">
                   <FormLabel className="text-right">Name</FormLabel>
                   <FormControl className="col-span-3">
-                    <Input placeholder="e.g., STM32F401 Microcontroller" {...field} />
+                    <Input placeholder="e.g., 6ft Cedar Fence Panel" {...field} />
                   </FormControl>
                   <FormMessage className="col-start-2 col-span-3" />
                 </FormItem>
@@ -126,7 +126,7 @@ export function AddComponentDialog({ onAddComponent }: AddComponentDialogProps) 
                 <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-1">
                   <FormLabel className="text-right">Part #</FormLabel>
                   <FormControl className="col-span-3">
-                    <Input placeholder="e.g., STM32F401RET6" {...field} />
+                    <Input placeholder="e.g., A1-CFP-6" {...field} />
                   </FormControl>
                    <FormMessage className="col-start-2 col-span-3" />
                 </FormItem>
@@ -165,7 +165,7 @@ export function AddComponentDialog({ onAddComponent }: AddComponentDialogProps) 
                 <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-1">
                   <FormLabel className="text-right">Location</FormLabel>
                   <FormControl className="col-span-3">
-                    <Input placeholder="e.g., A-01-C" {...field} />
+                    <Input placeholder="e.g., Yard A, Bay 3" {...field} />
                   </FormControl>
                    <FormMessage className="col-start-2 col-span-3" />
                 </FormItem>
@@ -198,7 +198,7 @@ export function AddComponentDialog({ onAddComponent }: AddComponentDialogProps) 
                 <DialogClose asChild>
                     <Button type="button" variant="outline">Cancel</Button>
                 </DialogClose>
-                <Button type="submit">Add Component</Button>
+                <Button type="submit">Add Item</Button>
             </DialogFooter>
           </form>
         </Form>

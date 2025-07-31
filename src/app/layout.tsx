@@ -9,8 +9,8 @@ import { ThemeProvider } from '@/components/theme-provider';
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
-  title: 'LabTrack - Electronics Lab Inventory Management',
-  description: 'A web-based Electronics Lab Inventory Management System (LIMS).',
+  title: 'A1 Fence Corp - Inventory Management',
+  description: 'Inventory Management System for A1 Fence Corporation.',
 };
 
 export default function RootLayout({

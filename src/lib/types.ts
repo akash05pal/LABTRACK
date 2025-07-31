@@ -1,4 +1,4 @@
-export type ComponentCategory = 'Resistors' | 'Capacitors' | 'ICs' | 'Sensors' | 'Dev Boards' | 'Other';
+export type ComponentCategory = 'Fencing' | 'Gates' | 'Hardware' | 'Materials' | 'Tools' | 'Other';
 
 export interface Component {
   id: string;

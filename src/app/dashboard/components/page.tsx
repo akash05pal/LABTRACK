@@ -11,7 +11,7 @@ import { Search } from 'lucide-react';
 import { AddComponentDialog } from '@/components/dashboard/add-component-dialog';
 import { EditComponentDialog } from '@/components/dashboard/edit-component-dialog';
 
-const categories: ComponentCategory[] = ['Resistors', 'Capacitors', 'ICs', 'Sensors', 'Dev Boards', 'Other'];
+const categories: ComponentCategory[] = ['Fencing', 'Gates', 'Hardware', 'Materials', 'Tools', 'Other'];
 const locations = Array.from(new Set(initialComponents.map(c => c.location)));
 
 export default function ComponentsPage() {
@@ -67,7 +67,7 @@ export default function ComponentsPage() {
   return (
     <div className="flex flex-col h-full">
       <header className="flex items-center justify-between p-4 border-b bg-card">
-        <h1 className="text-2xl font-bold">Components</h1>
+        <h1 className="text-2xl font-bold">Inventory</h1>
         <AddComponentDialog onAddComponent={handleAddComponent} />
       </header>
       <div className="p-4 border-b">
@@ -133,4 +133,3 @@ export default function ComponentsPage() {
     </div>
   );
 }
-

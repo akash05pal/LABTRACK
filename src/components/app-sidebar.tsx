@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   Bell,
-  CircuitBoard,
+  ShieldCheck,
   HardDrive,
   History,
   LayoutDashboard,
@@ -30,14 +30,14 @@ import { Button } from './ui/button';
 // Mock user data, in a real app this would come from context or a hook
 const user = {
   name: 'Admin User',
-  email: 'admin@labtrack.com',
+  email: 'admin@a1fence.com',
   role: 'Admin', // Can be 'Admin', 'Technician', 'Researcher'
   avatar: 'https://placehold.co/40x40.png',
 };
 
 const menuItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/dashboard/components', label: 'Components', icon: HardDrive },
+  { href: '/dashboard/components', label: 'Inventory', icon: HardDrive },
   { href: '/dashboard/logs', label: 'Logs', icon: History },
   {
     href: '/dashboard/notifications',
@@ -63,12 +63,12 @@ export default function AppSidebar() {
     <Sidebar>
       <SidebarHeader>
         <div className="flex items-center gap-2">
-          <CircuitBoard className="h-7 w-7 text-primary" />
+          <ShieldCheck className="h-7 w-7 text-primary" />
           <span
             className="text-xl font-semibold text-primary"
             style={{ opacity: state === 'expanded' ? 1 : 0, transition: 'opacity 0.2s' }}
           >
-            LabTrack
+            A1 Fence Corp
           </span>
         </div>
         <SidebarTrigger className="ml-auto" />

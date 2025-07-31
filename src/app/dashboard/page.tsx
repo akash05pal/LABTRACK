@@ -1,7 +1,7 @@
 
 import { mockComponents, mockLogs } from '@/lib/mock-data';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { DollarSign, Package, PackageCheck, PackageX, History, AlertCircle } from 'lucide-react';
+import { DollarSign, Package, PackageCheck, PackageX, History, AlertCircle, HardDrive } from 'lucide-react';
 import { OverviewChart } from '@/components/dashboard/overview-chart';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
@@ -28,8 +28,8 @@ export default function DashboardPage() {
       <main className="flex-1 overflow-auto p-4 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Components</CardTitle>
-            <Package className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Total Item Types</CardTitle>
+            <HardDrive className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalComponents}</div>
@@ -43,7 +43,7 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">${totalValue.toFixed(2)}</div>
-            <p className="text-xs text-muted-foreground">Across all components</p>
+            <p className="text-xs text-muted-foreground">Across all items</p>
           </CardContent>
         </Card>
         <Card>
@@ -69,7 +69,7 @@ export default function DashboardPage() {
 
         <Card className="md:col-span-2 lg:col-span-4">
           <CardHeader>
-            <CardTitle>Components by Category</CardTitle>
+            <CardTitle>Items by Category</CardTitle>
           </CardHeader>
           <CardContent className="pl-2">
             <OverviewChart />
@@ -125,7 +125,7 @@ export default function DashboardPage() {
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Component</TableHead>
+                        <TableHead>Item</TableHead>
                         <TableHead className="text-right">Quantity</TableHead>
                     </TableRow>
                 </TableHeader>

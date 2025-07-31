@@ -27,7 +27,7 @@ import type { Component, ComponentCategory } from "@/lib/types";
 import { useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 
-const categories: ComponentCategory[] = ['Resistors', 'Capacitors', 'ICs', 'Sensors', 'Dev Boards', 'Other'];
+const categories: ComponentCategory[] = ['Fencing', 'Gates', 'Hardware', 'Materials', 'Tools', 'Other'];
 
 const formSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters long."),
@@ -73,7 +73,7 @@ export function EditComponentDialog({ component, onUpdateComponent, onClose }: E
     };
     onUpdateComponent(updatedComponent);
     toast({
-        title: "Component Updated",
+        title: "Item Updated",
         description: `${data.name} has been updated.`,
     });
   };
@@ -82,7 +82,7 @@ export function EditComponentDialog({ component, onUpdateComponent, onClose }: E
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Edit Component</DialogTitle>
+          <DialogTitle>Edit Item</DialogTitle>
           <DialogDescription>
             Update the details for {component.name}.
           </DialogDescription>

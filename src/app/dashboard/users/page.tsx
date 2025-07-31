@@ -17,7 +17,7 @@ const users = [
     {
         id: '1',
         name: 'Admin User',
-        email: 'admin@labtrack.com',
+        email: 'admin@a1fence.com',
         role: 'Admin',
         avatar: 'https://placehold.co/40x40.png',
         status: 'Active'
@@ -25,7 +25,7 @@ const users = [
     {
         id: '2',
         name: 'Tech User',
-        email: 'tech@labtrack.com',
+        email: 'tech@a1fence.com',
         role: 'Technician',
         avatar: 'https://placehold.co/40x40.png',
         status: 'Active'
@@ -33,7 +33,7 @@ const users = [
     {
         id: '3',
         name: 'Researcher User',
-        email: 'researcher@labtrack.com',
+        email: 'researcher@a1fence.com',
         role: 'Researcher',
         avatar: 'https://placehold.co/40x40.png',
         status: 'Inactive'

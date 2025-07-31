@@ -24,7 +24,7 @@ export function OverviewChart() {
     
     const chartConfig = {
         total: {
-          label: "Components",
+          label: "Items",
           color: "hsl(var(--chart-1))",
         },
       }
