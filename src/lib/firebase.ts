@@ -3,22 +3,16 @@ import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
-  projectId: "labtrack-ckpvl",
-  appId: "1:264231788271:web:72ced018e71a5619a3851a",
-  storageBucket: "labtrack-ckpvl.firebasestorage.app",
-  apiKey: "AIzaSyB5xyxQ5twmeTqv0fblWIIogNRryyNdLkQ",
-  authDomain: "labtrack-ckpvl.firebaseapp.com",
-  messagingSenderId: "264231788271",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase
-let app;
-if (getApps().length === 0) {
-    app = initializeApp(firebaseConfig);
-} else {
-    app = getApp();
-}
-
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const auth = getAuth(app);
 
 export { app, auth };
