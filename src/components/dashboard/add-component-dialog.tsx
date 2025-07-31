@@ -84,7 +84,7 @@ export function AddComponentDialog({ onAddComponent }: AddComponentDialogProps) 
     toast({
         title: "Component Added",
         description: `${data.name} has been added to the inventory.`,
-    });
+    })
     form.reset();
     setIsOpen(false);
   };
