@@ -41,11 +41,11 @@ export function InwardOutwardChart() {
     const chartConfig = {
         inward: {
           label: "Inward",
-          color: "hsl(var(--chart-2))",
+          color: "hsl(var(--chart-3))",
         },
         outward: {
           label: "Outward",
-          color: "hsl(var(--chart-5))",
+          color: "hsl(var(--destructive))",
         },
     }
 
@@ -75,3 +75,4 @@ export function InwardOutwardChart() {
     </ChartContainer>
   );
 }
+
