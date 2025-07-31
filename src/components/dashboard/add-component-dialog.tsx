@@ -97,7 +97,7 @@ export function AddComponentDialog({ onAddComponent }: AddComponentDialogProps) 
           Add Item
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>Add New Inventory Item</DialogTitle>
           <DialogDescription>
@@ -105,96 +105,102 @@ export function AddComponentDialog({ onAddComponent }: AddComponentDialogProps) 
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4 py-4 max-h-[70vh] overflow-y-auto pr-6">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-1">
-                  <FormLabel className="text-right">Name</FormLabel>
-                  <FormControl className="col-span-3">
-                    <Input placeholder="e.g., 6ft Cedar Fence Panel" {...field} />
-                  </FormControl>
-                  <FormMessage className="col-start-2 col-span-3" />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="partNumber"
-              render={({ field }) => (
-                <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-1">
-                  <FormLabel className="text-right">Part #</FormLabel>
-                  <FormControl className="col-span-3">
-                    <Input placeholder="e.g., A1-CFP-6" {...field} />
-                  </FormControl>
-                   <FormMessage className="col-start-2 col-span-3" />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="quantity"
-              render={({ field }) => (
-                <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-1">
-                  <FormLabel className="text-right">Quantity</FormLabel>
-                  <FormControl className="col-span-3">
-                    <Input type="number" placeholder="e.g., 50" {...field} />
-                  </FormControl>
-                   <FormMessage className="col-start-2 col-span-3" />
-                </FormItem>
-              )}
-            />
-             <FormField
-              control={form.control}
-              name="lowStockThreshold"
-              render={({ field }) => (
-                <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-1">
-                  <FormLabel className="text-right">Low Stock At</FormLabel>
-                  <FormControl className="col-span-3">
-                    <Input type="number" placeholder="e.g., 10" {...field} />
-                  </FormControl>
-                   <FormMessage className="col-start-2 col-span-3" />
-                </FormItem>
-              )}
-            />
-             <FormField
-              control={form.control}
-              name="location"
-              render={({ field }) => (
-                <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-1">
-                  <FormLabel className="text-right">Location</FormLabel>
-                  <FormControl className="col-span-3">
-                    <Input placeholder="e.g., Yard A, Bay 3" {...field} />
-                  </FormControl>
-                   <FormMessage className="col-start-2 col-span-3" />
-                </FormItem>
-              )}
-            />
-             <FormField
-              control={form.control}
-              name="category"
-              render={({ field }) => (
-                <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-1">
-                  <FormLabel className="text-right">Category</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value} name={field.name}>
-                        <FormControl className="col-span-3">
-                            <SelectTrigger>
-                                <SelectValue placeholder="Select a category" />
-                            </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                             {categories.map(cat => (
-                                <SelectItem key={cat} value={cat}>{cat}</SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                   <FormMessage className="col-start-2 col-span-3" />
-                </FormItem>
-              )}
-            />
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 max-h-[70vh] overflow-y-auto pr-6">
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                 <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="e.g., 6ft Cedar Fence Panel" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="partNumber"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Part #</FormLabel>
+                      <FormControl>
+                        <Input placeholder="e.g., A1-CFP-6" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="quantity"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Quantity</FormLabel>
+                      <FormControl>
+                        <Input type="number" placeholder="e.g., 50" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="lowStockThreshold"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Low Stock At</FormLabel>
+                      <FormControl>
+                        <Input type="number" placeholder="e.g., 10" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                 <FormField
+                  control={form.control}
+                  name="location"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Location</FormLabel>
+                      <FormControl>
+                        <Input placeholder="e.g., Yard A, Bay 3" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="category"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Category</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value} name={field.name}>
+                            <FormControl>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select a category" />
+                                </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                                {categories.map(cat => (
+                                    <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+            </div>
             
-            <DialogFooter className="col-span-4 !justify-between mt-4">
+            <DialogFooter className="!justify-between mt-6">
                 <DialogClose asChild>
                     <Button type="button" variant="outline">Cancel</Button>
                 </DialogClose>
