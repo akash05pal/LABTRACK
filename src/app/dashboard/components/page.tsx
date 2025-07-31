@@ -1,21 +1,36 @@
+
+"use client";
+
+import { useState } from 'react';
 import InventoryView from '@/components/dashboard/inventory-view';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { mockComponents } from '@/lib/mock-data';
-import type { ComponentCategory } from '@/lib/types';
+import { mockComponents as initialComponents } from '@/lib/mock-data';
+import type { Component, ComponentCategory } from '@/lib/types';
 import { Plus, Search } from 'lucide-react';
 import { AddComponentDialog } from '@/components/dashboard/add-component-dialog';
 
 const categories: ComponentCategory[] = ['Resistors', 'Capacitors', 'ICs', 'Sensors', 'Dev Boards', 'Other'];
-const locations = Array.from(new Set(mockComponents.map(c => c.location)));
+const locations = Array.from(new Set(initialComponents.map(c => c.location)));
 
 export default function ComponentsPage() {
+  const [components, setComponents] = useState<Component[]>(initialComponents);
+  
+  const handleAddComponent = (newComponent: Omit<Component, 'id' | 'lastOutwardDate'>) => {
+    const componentToAdd: Component = {
+        ...newComponent,
+        id: (components.length + 1).toString(),
+        lastOutwardDate: new Date().toISOString(),
+    };
+    setComponents(prev => [componentToAdd, ...prev]);
+  };
+
   return (
     <div className="flex flex-col h-full">
       <header className="flex items-center justify-between p-4 border-b bg-card">
         <h1 className="text-2xl font-bold">Components</h1>
-        <AddComponentDialog />
+        <AddComponentDialog onAddComponent={handleAddComponent} />
       </header>
       <div className="p-4 border-b">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -59,7 +74,7 @@ export default function ComponentsPage() {
         </div>
       </div>
       <main className="flex-1 overflow-auto p-4">
-        <InventoryView components={mockComponents} />
+        <InventoryView components={components} />
       </main>
     </div>
   );
