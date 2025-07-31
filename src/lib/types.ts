@@ -26,4 +26,5 @@ export interface LogEntry {
   componentId: string;
   timestamp: string;
   details: string;
+  quantity?: number;
 }

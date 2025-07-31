@@ -1,24 +1,27 @@
 
 import { mockComponents, mockLogs } from '@/lib/mock-data';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { DollarSign, Package, PackageCheck, PackageX, History, AlertCircle, HardDrive } from 'lucide-react';
-import { OverviewChart } from '@/components/dashboard/overview-chart';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { DollarSign, Package, PackageX, History, AlertCircle, HardDrive, Clock } from 'lucide-react';
+import { InwardOutwardChart } from '@/components/dashboard/inward-outward-chart';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { formatDistanceToNow } from 'date-fns';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { isBefore, subMonths } from 'date-fns';
 
 export default function DashboardPage() {
   const totalComponents = mockComponents.length;
   const inStock = mockComponents.filter(c => c.quantity > 0).length;
   const outOfStock = mockComponents.filter(c => c.quantity === 0).length;
-  const lowStock = mockComponents.filter(c => c.quantity > 0 && c.quantity < c.lowStockThreshold).length;
+  const lowStock = mockComponents.filter(c => c.quantity > 0 && c.quantity <= c.lowStockThreshold).length;
   const totalValue = mockComponents.reduce((acc, c) => acc + (c.quantity * c.unitPrice), 0);
 
-  const recentLogs = mockLogs.slice(0, 5);
-  const lowStockItems = mockComponents.filter(c => c.quantity > 0 && c.quantity < c.lowStockThreshold).slice(0, 5);
+  const lowStockItems = mockComponents.filter(c => c.quantity > 0 && c.quantity <= c.lowStockThreshold);
+  
+  const threeMonthsAgo = subMonths(new Date(), 3);
+  const oldStockItems = mockComponents.filter(c => 
+    isBefore(new Date(c.lastOutwardDate), threeMonthsAgo)
+  );
 
   return (
     <div className="flex flex-col h-full">
@@ -69,57 +72,18 @@ export default function DashboardPage() {
 
         <Card className="md:col-span-2 lg:col-span-4">
           <CardHeader>
-            <CardTitle>Items by Category</CardTitle>
+            <CardTitle>Monthly Movement</CardTitle>
+            <CardDescription>Inward and Outward item quantities over the last 30 days.</CardDescription>
           </CardHeader>
           <CardContent className="pl-2">
-            <OverviewChart />
+            <InwardOutwardChart />
           </CardContent>
         </Card>
 
         <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
-          </CardHeader>
-          <CardContent>
-             <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>User</TableHead>
-                  <TableHead>Action</TableHead>
-                  <TableHead className="text-right">Time</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {recentLogs.map((log) => (
-                  <TableRow key={log.id}>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                         <Avatar className="h-8 w-8">
-                          <AvatarImage src={log.user.avatar} alt={log.user.name} data-ai-hint="profile picture" />
-                          <AvatarFallback>{log.user.name.charAt(0)}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                            <div className="font-medium">{log.user.name}</div>
-                            <div className="text-xs text-muted-foreground">{log.componentName}</div>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                        <Badge variant="outline">{log.action}</Badge>
-                    </TableCell>
-                    <TableCell className="text-right text-xs text-muted-foreground">
-                        {formatDistanceToNow(new Date(log.timestamp), { addSuffix: true })}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-        
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle>Low Stock Items</CardTitle>
+            <CardTitle>Critically Low Stock</CardTitle>
+            <CardDescription>These items have fallen below their defined threshold.</CardDescription>
           </CardHeader>
           <CardContent>
             <Table>
@@ -130,15 +94,59 @@ export default function DashboardPage() {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {lowStockItems.map(item => (
+                    {lowStockItems.length > 0 ? lowStockItems.map(item => (
                         <TableRow key={item.id}>
                             <TableCell>
                                 <div className="font-medium">{item.name}</div>
                                 <div className="text-xs text-muted-foreground">{item.partNumber}</div>
                             </TableCell>
-                            <TableCell className="text-right font-bold text-amber-500">{item.quantity}</TableCell>
+                            <TableCell className="text-right">
+                                <Badge variant="secondary" className="bg-amber-500 text-white">{item.quantity}</Badge>
+                            </TableCell>
                         </TableRow>
-                    ))}
+                    )) : (
+                      <TableRow>
+                        <TableCell colSpan={2} className="h-24 text-center">
+                          No items with low stock.
+                        </TableCell>
+                      </TableRow>
+                    )}
+                </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+        
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle>Old Stock Alert</CardTitle>
+            <CardDescription>Items with no outward movement in over 3 months.</CardDescription>
+          </CardHeader>
+          <CardContent>
+             <Table>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead>Item</TableHead>
+                        <TableHead className="text-right">Last Outward</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {oldStockItems.length > 0 ? oldStockItems.map(item => (
+                        <TableRow key={item.id}>
+                            <TableCell>
+                                <div className="font-medium">{item.name}</div>
+                                <div className="text-xs text-muted-foreground">{item.partNumber}</div>
+                            </TableCell>
+                            <TableCell className="text-right text-xs text-muted-foreground">
+                                {new Date(item.lastOutwardDate).toLocaleDateString()}
+                            </TableCell>
+                        </TableRow>
+                    )) : (
+                      <TableRow>
+                        <TableCell colSpan={2} className="h-24 text-center">
+                          No old stock items.
+                        </TableCell>
+                      </TableRow>
+                    )}
                 </TableBody>
             </Table>
           </CardContent>

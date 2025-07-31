@@ -1,4 +1,5 @@
 import type { Component, LogEntry } from './types';
+import { subDays } from 'date-fns';
 
 export const mockComponents: Component[] = [
   {
@@ -13,7 +14,7 @@ export const mockComponents: Component[] = [
     datasheetUrl: '#',
     category: 'Fencing',
     lowStockThreshold: 20,
-    lastOutwardDate: '2024-07-12T12:00:00.000Z',
+    lastOutwardDate: subDays(new Date(), 5).toISOString(),
   },
   {
     id: '2',
@@ -21,13 +22,13 @@ export const mockComponents: Component[] = [
     manufacturer: 'Hardy Hardware',
     partNumber: 'HH-BGH-5',
     description: 'Heavy-duty black steel hinges for gates.',
-    quantity: 85,
+    quantity: 15,
     location: 'Warehouse, Shelf B4',
     unitPrice: 12.99,
     datasheetUrl: '#',
     category: 'Hardware',
     lowStockThreshold: 30,
-    lastOutwardDate: '2024-07-17T12:00:00.000Z',
+    lastOutwardDate: subDays(new Date(), 120).toISOString(),
   },
   {
     id: '3',
@@ -41,7 +42,7 @@ export const mockComponents: Component[] = [
     datasheetUrl: '#',
     category: 'Materials',
     lowStockThreshold: 100,
-    lastOutwardDate: '2024-06-30T12:00:00.000Z',
+    lastOutwardDate: subDays(new Date(), 30).toISOString(),
   },
   {
     id: '4',
@@ -55,7 +56,7 @@ export const mockComponents: Component[] = [
     datasheetUrl: '#',
     category: 'Gates',
     lowStockThreshold: 5,
-    lastOutwardDate: '2024-06-07T12:00:00.000Z',
+    lastOutwardDate: subDays(new Date(), 150).toISOString(),
   },
   {
     id: '5',
@@ -63,13 +64,13 @@ export const mockComponents: Component[] = [
     manufacturer: 'ToolTime',
     partNumber: 'TT-PHD-01',
     description: 'Manual post hole digger with fiberglass handles.',
-    quantity: 12,
+    quantity: 3,
     location: 'Tool Shed',
     unitPrice: 45.0,
     datasheetUrl: '#',
     category: 'Tools',
     lowStockThreshold: 4,
-    lastOutwardDate: '2024-07-07T12:00:00.000Z',
+    lastOutwardDate: subDays(new Date(), 25).toISOString(),
   },
   {
     id: '6',
@@ -83,7 +84,7 @@ export const mockComponents: Component[] = [
     datasheetUrl: '#',
     category: 'Materials',
     lowStockThreshold: 50,
-    lastOutwardDate: '2024-05-23T12:00:00.000Z',
+    lastOutwardDate: subDays(new Date(), 200).toISOString(),
   },
   {
     id: '7',
@@ -97,55 +98,53 @@ export const mockComponents: Component[] = [
     datasheetUrl: '#',
     category: 'Hardware',
     lowStockThreshold: 15,
-    lastOutwardDate: '2024-07-17T12:00:00.000Z',
+    lastOutwardDate: subDays(new Date(), 10).toISOString(),
   },
 ];
 
 
-export const mockLogs: LogEntry[] = [
-    {
-      id: 'log1',
-      user: { name: 'Admin User', avatar: 'https://placehold.co/40x40.png' },
+const generateLogs = (): LogEntry[] => {
+  const logs: LogEntry[] = [];
+  const users = [
+    { name: 'Admin User', avatar: 'https://placehold.co/40x40.png' },
+    { name: 'Tech User', avatar: 'https://placehold.co/40x40.png' },
+    { name: 'Researcher User', avatar: 'https://placehold.co/40x40.png' },
+  ];
+  
+  for (let i = 0; i < 30; i++) {
+    const component = mockComponents[i % mockComponents.length];
+    const user = users[i % users.length];
+    const inwardQty = Math.floor(Math.random() * 20) + 5;
+    const outwardQty = Math.floor(Math.random() * 10) + 1;
+
+    // Inward
+    logs.push({
+      id: `log-in-${i}`,
+      user,
       action: 'Added',
-      componentName: '6ft Cedar Fence Panel',
-      componentId: '1',
-      timestamp: '2024-07-22T14:30:00.000Z',
-      details: 'Added 50 units from new shipment.',
-    },
-    {
-      id: 'log2',
-      user: { name: 'Tech User', avatar: 'https://placehold.co/40x40.png' },
-      action: 'Issued',
-      componentName: '80lb Bag of Concrete Mix',
-      componentId: '3',
-      timestamp: '2024-07-22T11:05:00.000Z',
-      details: 'Issued 20 bags for Johnson project.',
-    },
-     {
-      id: 'log3',
-      user: { name: 'Admin User', avatar: 'https://placehold.co/40x40.png' },
-      action: 'Updated',
-      componentName: '12ft Walk-Through Gate',
-      componentId: '4',
-      timestamp: '2024-07-21T09:15:00.000Z',
-      details: 'Changed low stock threshold to 3.',
-    },
-    {
-      id: 'log4',
-      user: { name: 'Researcher User', avatar: 'https://placehold.co/40x40.png' },
-      action: 'Removed',
-      componentName: 'Post Hole Digger',
-      componentId: '5',
-      timestamp: '2024-07-20T16:45:00.000Z',
-      details: 'Removed 1 broken unit.',
-    },
-    {
-      id: 'log5',
-      user: { name: 'Tech User', avatar: 'https://placehold.co/40x40.png' },
-      action: 'Issued',
-      componentName: '6ft Cedar Fence Panel',
-      componentId: '1',
-      timestamp: '2024-07-20T10:00:00.000Z',
-      details: 'Issued 15 panels for Smith job.',
-    },
-];
+      componentName: component.name,
+      componentId: component.id,
+      timestamp: subDays(new Date(), i).toISOString(),
+      details: `Added ${inwardQty} units.`,
+      quantity: inwardQty,
+    });
+    
+    // Outward (for some)
+    if (i % 2 === 0) {
+       logs.push({
+        id: `log-out-${i}`,
+        user,
+        action: 'Issued',
+        componentName: component.name,
+        componentId: component.id,
+        timestamp: subDays(new Date(), i).toISOString(),
+        details: `Issued ${outwardQty} units for a project.`,
+        quantity: outwardQty,
+      });
+    }
+  }
+  return logs;
+}
+
+
+export const mockLogs: LogEntry[] = generateLogs();
