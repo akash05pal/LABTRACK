@@ -25,6 +25,7 @@ import {
   SidebarMenuBadge,
 } from '@/components/ui/sidebar';
 import { useSidebar } from '@/components/ui/sidebar';
+import { Button } from './ui/button';
 
 // Mock user data, in a real app this would come from context or a hook
 const user = {
