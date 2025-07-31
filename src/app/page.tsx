@@ -1,11 +1,39 @@
-import Link from 'next/link';
+
+'use client';
+
 import { ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useAuth } from '@/hooks/use-auth';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useToast } from '@/hooks/use-toast';
 
 export default function LoginPage() {
+  const { login } = useAuth();
+  const router = useRouter();
+  const { toast } = useToast();
+  const [email, setEmail] = useState('admin@a1fence.com');
+  const [password, setPassword] = useState('password');
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async () => {
+    setLoading(true);
+    try {
+      await login(email, password);
+      router.push('/dashboard');
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Login Failed",
+        description: (error as Error).message,
+      });
+      setLoading(false);
+    }
+  };
+
   return (
     <div 
       className="flex min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat p-4"
@@ -26,17 +54,17 @@ export default function LoginPage() {
           <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="employee@a1fence.com" required />
+              <Input id="email" type="email" placeholder="employee@a1fence.com" required value={email} onChange={(e) => setEmail(e.target.value)} />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" required />
+              <Input id="password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
           </div>
         </CardContent>
         <CardFooter className="flex flex-col gap-4">
-          <Button className="w-full" asChild>
-            <Link href="/dashboard">Log In</Link>
+          <Button className="w-full" onClick={handleLogin} disabled={loading}>
+            {loading ? 'Logging in...' : 'Log In'}
           </Button>
           <p className="text-xs text-center text-muted-foreground">
             Don't have an account? Contact your administrator.

@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from 'next/link';
@@ -26,14 +27,8 @@ import {
 } from '@/components/ui/sidebar';
 import { useSidebar } from '@/components/ui/sidebar';
 import { Button } from './ui/button';
-
-// Mock user data, in a real app this would come from context or a hook
-const user = {
-  name: 'Admin User',
-  email: 'admin@a1fence.com',
-  role: 'Admin', // Can be 'Admin', 'Technician', 'Researcher'
-  avatar: 'https://placehold.co/40x40.png',
-};
+import { useAuth } from '@/hooks/use-auth';
+import { useRouter } from 'next/navigation';
 
 const menuItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -54,8 +49,15 @@ const adminMenuItems = [
 export default function AppSidebar() {
   const pathname = usePathname();
   const { state } = useSidebar();
+  const { user, logout } = useAuth();
+  const router = useRouter();
 
-  const isAdmin = user.role === 'Admin';
+  const handleLogout = async () => {
+    await logout();
+    router.push('/');
+  };
+
+  const isAdmin = user?.role === 'Admin';
 
   const allMenuItems = isAdmin ? [...menuItems, ...adminMenuItems] : menuItems;
 
@@ -104,18 +106,16 @@ export default function AppSidebar() {
         </SidebarMenu>
         <div className="flex items-center gap-3 p-2 rounded-lg bg-muted/50">
           <Avatar className="h-10 w-10">
-            <AvatarImage src={user.avatar} alt={user.name} data-ai-hint="profile picture" />
-            <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+            <AvatarImage src={user?.avatar} alt={user?.name || ''} data-ai-hint="profile picture" />
+            <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
           </Avatar>
           <div className="flex-1 overflow-hidden" style={{ opacity: state === 'expanded' ? 1 : 0, width: state === 'expanded' ? 'auto' : 0, transition: 'opacity 0.2s, width 0.2s' }}>
-            <p className="font-semibold text-sm truncate">{user.name}</p>
-            <p className="text-xs text-muted-foreground truncate">{user.role}</p>
+            <p className="font-semibold text-sm truncate">{user?.name}</p>
+            <p className="text-xs text-muted-foreground truncate">{user?.role}</p>
           </div>
-          <Link href="/">
-            <Button variant="ghost" size="icon" aria-label="Log Out">
-              <LogOut className="h-5 w-5" />
-            </Button>
-          </Link>
+          <Button variant="ghost" size="icon" aria-label="Log Out" onClick={handleLogout}>
+            <LogOut className="h-5 w-5" />
+          </Button>
         </div>
       </SidebarFooter>
     </Sidebar>
