@@ -13,7 +13,7 @@ export const mockComponents: Component[] = [
     datasheetUrl: '#',
     category: 'ICs',
     lowStockThreshold: 10,
-    lastOutwardDate: new Date(new Date().setDate(new Date().getDate() - 10)).toISOString(),
+    lastOutwardDate: '2024-07-12T12:00:00.000Z',
   },
   {
     id: '2',
@@ -27,7 +27,7 @@ export const mockComponents: Component[] = [
     datasheetUrl: '#',
     category: 'Resistors',
     lowStockThreshold: 200,
-    lastOutwardDate: new Date(new Date().setDate(new Date().getDate() - 5)).toISOString(),
+    lastOutwardDate: '2024-07-17T12:00:00.000Z',
   },
   {
     id: '3',
@@ -41,7 +41,7 @@ export const mockComponents: Component[] = [
     datasheetUrl: '#',
     category: 'Capacitors',
     lowStockThreshold: 100,
-    lastOutwardDate: new Date(new Date().setDate(new Date().getDate() - 22)).toISOString(),
+    lastOutwardDate: '2024-06-30T12:00:00.000Z',
   },
   {
     id: '4',
@@ -55,7 +55,7 @@ export const mockComponents: Component[] = [
     datasheetUrl: '#',
     category: 'Dev Boards',
     lowStockThreshold: 5,
-    lastOutwardDate: new Date(new Date().setDate(new Date().getDate() - 45)).toISOString(),
+    lastOutwardDate: '2024-06-07T12:00:00.000Z',
   },
   {
     id: '5',
@@ -69,7 +69,7 @@ export const mockComponents: Component[] = [
     datasheetUrl: '#',
     category: 'Sensors',
     lowStockThreshold: 10,
-    lastOutwardDate: new Date(new Date().setDate(new Date().getDate() - 15)).toISOString(),
+    lastOutwardDate: '2024-07-07T12:00:00.000Z',
   },
   {
     id: '6',
@@ -83,7 +83,7 @@ export const mockComponents: Component[] = [
     datasheetUrl: '#',
     category: 'Dev Boards',
     lowStockThreshold: 5,
-    lastOutwardDate: new Date(new Date().setDate(new Date().getDate() - 60)).toISOString(),
+    lastOutwardDate: '2024-05-23T12:00:00.000Z',
   },
   {
     id: '7',
@@ -97,7 +97,7 @@ export const mockComponents: Component[] = [
     datasheetUrl: '#',
     category: 'ICs',
     lowStockThreshold: 50,
-    lastOutwardDate: new Date(new Date().setDate(new Date().getDate() - 5)).toISOString(),
+    lastOutwardDate: '2024-07-17T12:00:00.000Z',
   },
   {
     id: '8',
@@ -111,7 +111,7 @@ export const mockComponents: Component[] = [
     datasheetUrl: '#',
     category: 'Other',
     lowStockThreshold: 100,
-    lastOutwardDate: new Date(new Date().setDate(new Date().getDate() - 120)).toISOString(),
+    lastOutwardDate: '2024-03-24T12:00:00.000Z',
   },
   {
     id: '9',
@@ -125,7 +125,7 @@ export const mockComponents: Component[] = [
     datasheetUrl: '#',
     category: 'ICs',
     lowStockThreshold: 20,
-    lastOutwardDate: new Date(new Date().setDate(new Date().getDate() - 30)).toISOString(),
+    lastOutwardDate: '2024-06-22T12:00:00.000Z',
   },
    {
     id: '10',
@@ -139,6 +139,6 @@ export const mockComponents: Component[] = [
     datasheetUrl: '#',
     category: 'Other',
     lowStockThreshold: 300,
-    lastOutwardDate: new Date(new Date().setDate(new Date().getDate() - 2)).toISOString(),
+    lastOutwardDate: '2024-07-20T12:00:00.000Z',
   },
 ];
