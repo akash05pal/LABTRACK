@@ -1,4 +1,4 @@
-import type { Component } from './types';
+import type { Component, LogEntry } from './types';
 
 export const mockComponents: Component[] = [
   {
@@ -141,4 +141,53 @@ export const mockComponents: Component[] = [
     lowStockThreshold: 300,
     lastOutwardDate: '2024-07-20T12:00:00.000Z',
   },
+];
+
+
+export const mockLogs: LogEntry[] = [
+    {
+      id: 'log1',
+      user: { name: 'Admin User', avatar: 'https://placehold.co/40x40.png' },
+      action: 'Added',
+      componentName: 'Red LED 5mm',
+      componentId: '10',
+      timestamp: '2024-07-22T14:30:00.000Z',
+      details: 'Added 500 units to stock.',
+    },
+    {
+      id: 'log2',
+      user: { name: 'Tech User', avatar: 'https://placehold.co/40x40.png' },
+      action: 'Issued',
+      componentName: '10k Ohm Resistor 0.25W',
+      componentId: '2',
+      timestamp: '2024-07-22T11:05:00.000Z',
+      details: 'Issued 50 units for Project X.',
+    },
+     {
+      id: 'log3',
+      user: { name: 'Admin User', avatar: 'https://placehold.co/40x40.png' },
+      action: 'Updated',
+      componentName: '100nF Ceramic Capacitor',
+      componentId: '3',
+      timestamp: '2024-07-21T09:15:00.000Z',
+      details: 'Changed low stock threshold to 50.',
+    },
+    {
+      id: 'log4',
+      user: { name: 'Researcher User', avatar: 'https://placehold.co/40x40.png' },
+      action: 'Removed',
+      componentName: 'Arduino Uno R3',
+      componentId: '6',
+      timestamp: '2024-07-20T16:45:00.000Z',
+      details: 'Removed 2 defective units.',
+    },
+    {
+      id: 'log5',
+      user: { name: 'Tech User', avatar: 'https://placehold.co/40x40.png' },
+      action: 'Issued',
+      componentName: 'STM32F401 Microcontroller',
+      componentId: '1',
+      timestamp: '2024-07-20T10:00:00.000Z',
+      details: 'Issued 5 units for Prototype B.',
+    },
 ];

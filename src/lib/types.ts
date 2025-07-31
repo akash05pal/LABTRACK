@@ -14,3 +14,16 @@ export interface Component {
   lowStockThreshold: number;
   lastOutwardDate: string;
 }
+
+export interface LogEntry {
+  id: string;
+  user: {
+    name: string;
+    avatar: string;
+  };
+  action: 'Added' | 'Removed' | 'Updated' | 'Issued';
+  componentName: string;
+  componentId: string;
+  timestamp: string;
+  details: string;
+}
