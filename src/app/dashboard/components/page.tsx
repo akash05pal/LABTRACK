@@ -1,15 +1,16 @@
-import { AddComponentDialog } from '@/components/dashboard/add-component-dialog';
 import InventoryView from '@/components/dashboard/inventory-view';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { mockComponents } from '@/lib/mock-data';
 import type { ComponentCategory } from '@/lib/types';
-import { Search } from 'lucide-react';
+import { Plus, Search } from 'lucide-react';
+import { AddComponentDialog } from '@/components/dashboard/add-component-dialog';
 
 const categories: ComponentCategory[] = ['Resistors', 'Capacitors', 'ICs', 'Sensors', 'Dev Boards', 'Other'];
 const locations = Array.from(new Set(mockComponents.map(c => c.location)));
 
-export default function DashboardPage() {
+export default function ComponentsPage() {
   return (
     <div className="flex flex-col h-full">
       <header className="flex items-center justify-between p-4 border-b bg-card">
