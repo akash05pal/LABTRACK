@@ -84,7 +84,7 @@ export function AddComponentDialog({ onAddComponent }: AddComponentDialogProps) 
     toast({
         title: "Component Added",
         description: `${data.name} has been added to the inventory.`,
-    })
+    });
     form.reset();
     setIsOpen(false);
   };
@@ -102,7 +102,7 @@ export function AddComponentDialog({ onAddComponent }: AddComponentDialogProps) 
           <DialogTitle>Add New Inventory Item</DialogTitle>
           <DialogDescription>
             Fill in the details below to add a new item.
-          </Dialog-description>
+          </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4 py-4 max-h-[70vh] overflow-y-auto pr-6">
