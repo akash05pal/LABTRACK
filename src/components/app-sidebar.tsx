@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   Bell,
-  ShieldCheck,
+  CircuitBoard,
   HardDrive,
   History,
   LayoutDashboard,
@@ -65,12 +65,12 @@ export default function AppSidebar() {
     <Sidebar>
       <SidebarHeader>
         <div className="flex items-center gap-2">
-          <ShieldCheck className="h-7 w-7 text-primary" />
+          <CircuitBoard className="h-7 w-7 text-primary" />
           <span
             className="text-xl font-semibold text-primary"
             style={{ opacity: state === 'expanded' ? 1 : 0, transition: 'opacity 0.2s' }}
           >
-            A1 Fence Corp
+            LabTrack
           </span>
         </div>
         <SidebarTrigger className="ml-auto" />

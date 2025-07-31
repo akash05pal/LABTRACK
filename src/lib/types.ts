@@ -1,4 +1,18 @@
-export type ComponentCategory = 'Fencing' | 'Gates' | 'Hardware' | 'Materials' | 'Tools' | 'Other';
+
+export type ComponentCategory =
+  | 'Resistors'
+  | 'Capacitors'
+  | 'Inductors'
+  | 'Diodes'
+  | 'Transistors'
+  | 'Integrated Circuits (ICs)'
+  | 'Connectors'
+  | 'Sensors'
+  | 'Microcontrollers/Dev Boards'
+  | 'Switches/Buttons'
+  | 'LEDs/Displays'
+  | 'Cables/Wires'
+  | 'Other';
 
 export interface Component {
   id: string;

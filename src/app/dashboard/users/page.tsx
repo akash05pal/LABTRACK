@@ -1,3 +1,4 @@
+
 import {
   Table,
   TableBody,
@@ -17,7 +18,7 @@ const users = [
     {
         id: '1',
         name: 'Admin User',
-        email: 'admin@a1fence.com',
+        email: 'admin@labtrack.com',
         role: 'Admin',
         avatar: 'https://placehold.co/40x40.png',
         status: 'Active'
@@ -25,7 +26,7 @@ const users = [
     {
         id: '2',
         name: 'Tech User',
-        email: 'tech@a1fence.com',
+        email: 'tech@labtrack.com',
         role: 'Technician',
         avatar: 'https://placehold.co/40x40.png',
         status: 'Active'
@@ -33,7 +34,7 @@ const users = [
     {
         id: '3',
         name: 'Researcher User',
-        email: 'researcher@a1fence.com',
+        email: 'researcher@labtrack.com',
         role: 'Researcher',
         avatar: 'https://placehold.co/40x40.png',
         status: 'Inactive'

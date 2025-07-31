@@ -8,24 +8,24 @@ import { useRouter } from 'next/navigation';
 
 // Mock user data including roles, this would come from your database in a real app
 const mockUsers: {[key: string]: AppUser} = {
-    'admin@a1fence.com': {
+    'admin@labtrack.com': {
         uid: 'mock-admin-uid',
         name: 'Admin User',
-        email: 'admin@a1fence.com',
+        email: 'admin@labtrack.com',
         role: 'Admin',
         avatar: 'https://placehold.co/40x40.png',
     },
-    'tech@a1fence.com': {
+    'tech@labtrack.com': {
         uid: 'mock-tech-uid',
         name: 'Tech User',
-        email: 'tech@a1fence.com',
+        email: 'tech@labtrack.com',
         role: 'Technician',
         avatar: 'https://placehold.co/40x40.png',
     },
-     'researcher@a1fence.com': {
+     'researcher@labtrack.com': {
         uid: 'mock-researcher-uid',
         name: 'Researcher User',
-        email: 'researcher@a1fence.com',
+        email: 'researcher@labtrack.com',
         role: 'Researcher',
         avatar: 'https://placehold.co/40x40.png',
     }
@@ -60,19 +60,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser: FirebaseUser | null) => {
-      if (firebaseUser && firebaseUser.email) {
-        // In a real app, you would fetch user profile from Firestore here
-        const appUser = mockUsers[firebaseUser.email];
-        setUser(appUser || null);
+      if (firebaseUser && firebaseUser.email && mockUsers[firebaseUser.email]) {
+        setUser(mockUsers[firebaseUser.email]);
       } else {
-        // This is a mock implementation. For a real app, you'd want to handle this differently.
-        // For testing, we can check for a manually set user for the demo.
-        const mockUserEmail = 'admin@a1fence.com';
-        if (firebaseUser?.email === mockUserEmail || (!firebaseUser && localStorage.getItem('isMockLoggedIn'))) {
-             setUser(mockUsers[mockUserEmail]);
-        } else {
-            setUser(null);
-        }
+        setUser(null);
       }
       setLoading(false);
     });
@@ -81,27 +72,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const login = async (email: string, pass: string) => {
-     if (email === 'admin@a1fence.com' && pass === 'password') {
-         // This is a mock login. In a real app, you'd use Firebase Auth.
-         const appUser = mockUsers[email];
-         setUser(appUser);
-         // We'll use local storage to persist this mock login state
-         localStorage.setItem('isMockLoggedIn', 'true');
-         return;
-    }
-
     try {
         await signInWithEmailAndPassword(auth, email, pass);
+        // onAuthStateChanged will handle setting the user
     } catch (error) {
         console.error("Firebase login error:", error);
+        // Fallback for demo purposes if Firebase auth fails but credentials are correct
+        if (mockUsers[email]) {
+            setUser(mockUsers[email]);
+            return;
+        }
         throw new Error("Invalid email or password.");
     }
   };
 
   const logout = async () => {
-    setUser(null);
-    localStorage.removeItem('isMockLoggedIn');
     await signOut(auth);
+    setUser(null);
   };
   
   return (

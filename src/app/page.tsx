@@ -1,7 +1,7 @@
 
 'use client';
 
-import { ShieldCheck } from 'lucide-react';
+import { CircuitBoard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -15,7 +15,7 @@ export default function LoginPage() {
   const { login } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
-  const [email, setEmail] = useState('admin@a1fence.com');
+  const [email, setEmail] = useState('admin@labtrack.com');
   const [password, setPassword] = useState('password');
   const [loading, setLoading] = useState(false);
 
@@ -38,23 +38,23 @@ export default function LoginPage() {
     <div 
       className="flex min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat p-4"
       style={{ backgroundImage: "url('https://placehold.co/1920x1080.png')" }}
-      data-ai-hint="fence construction"
+      data-ai-hint="circuit board"
     >
-      <div className="absolute inset-0 bg-black/60 z-0" />
+      <div className="absolute inset-0 bg-black/70 z-0" />
       <Card className="w-full max-w-sm shadow-2xl z-10">
         <CardHeader className="text-center">
           <div className="mb-4 flex items-center justify-center gap-2">
-            <ShieldCheck className="h-8 w-8 text-primary" />
-            <h1 className="text-3xl font-bold text-primary">A1 Fence Corp</h1>
+            <CircuitBoard className="h-8 w-8 text-primary" />
+            <h1 className="text-3xl font-bold text-primary">LabTrack</h1>
           </div>
           <CardTitle className="text-2xl">Welcome Back</CardTitle>
-          <CardDescription>Log in to manage your inventory.</CardDescription>
+          <CardDescription>Log in to manage your lab inventory.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="employee@a1fence.com" required value={email} onChange={(e) => setEmail(e.target.value)} />
+              <Input id="email" type="email" placeholder="employee@labtrack.com" required value={email} onChange={(e) => setEmail(e.target.value)} />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>

@@ -10,8 +10,8 @@ import { AuthProvider } from '@/hooks/use-auth';
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
-  title: 'A1 Fence Corp - Inventory Management',
-  description: 'Inventory Management System for A1 Fence Corporation.',
+  title: 'LabTrack - Inventory Management',
+  description: 'Inventory Management System for Electronics Labs.',
 };
 
 export default function RootLayout({
@@ -29,7 +29,7 @@ export default function RootLayout({
       <body className={cn('min-h-screen bg-background font-body antialiased', inter.variable)}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
