@@ -65,7 +65,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const appUser = mockUsers[firebaseUser.email];
         setUser(appUser || null);
       } else {
-        setUser(null);
+        // This is a mock implementation. For a real app, you'd want to handle this differently.
+        // For testing, we can check for a manually set user for the demo.
+        const mockUserEmail = 'admin@a1fence.com';
+        if (firebaseUser?.email === mockUserEmail || (!firebaseUser && localStorage.getItem('isMockLoggedIn'))) {
+             setUser(mockUsers[mockUserEmail]);
+        } else {
+            setUser(null);
+        }
       }
       setLoading(false);
     });
@@ -74,40 +81,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const login = async (email: string, pass: string) => {
-    // In a real app, you might not have mock users, but this allows easy testing
-    if (email === 'admin@a1fence.com' && pass === 'password') {
+     if (email === 'admin@a1fence.com' && pass === 'password') {
          // This is a mock login. In a real app, you'd use Firebase Auth.
-         // Since we can't create users in this environment, we'll simulate it.
          const appUser = mockUsers[email];
          setUser(appUser);
-         // Simulate setting a fake auth state
-         localStorage.setItem('mock-auth-user', JSON.stringify(appUser));
+         // We'll use local storage to persist this mock login state
+         localStorage.setItem('isMockLoggedIn', 'true');
          return;
     }
 
     try {
         await signInWithEmailAndPassword(auth, email, pass);
     } catch (error) {
+        console.error("Firebase login error:", error);
         throw new Error("Invalid email or password.");
     }
-
   };
 
   const logout = async () => {
     setUser(null);
-    localStorage.removeItem('mock-auth-user');
+    localStorage.removeItem('isMockLoggedIn');
     await signOut(auth);
   };
   
-   // Effect to check for mock auth state on initial load
-  useEffect(() => {
-    const storedUser = localStorage.getItem('mock-auth-user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-    setLoading(false);
-  }, []);
-
   return (
     <AuthContext.Provider value={{ user, loading, login, logout }}>
       {children}
