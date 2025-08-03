@@ -2,23 +2,8 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { onAuthStateChanged, signInWithEmailAndPassword, signOut, User as FirebaseUser, getAuth } from 'firebase/auth';
-import { initializeApp, getApps, getApp } from 'firebase/app';
-
-// --- Firebase Initialization ---
-const firebaseConfig = {
-  apiKey: "AIzaSyB5xyxQ5twmeTqv0fblWIIogNRryyNdLkQ",
-  authDomain: "labtrack-ckpvl.firebaseapp.com",
-  projectId: "labtrack-ckpvl",
-  storageBucket: "labtrack-ckpvl.firebasestorage.app",
-  messagingSenderId: "264231788271",
-  appId: "1:264231788271:web:72ced018e71a5619a3851a",
-};
-
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-const auth = getAuth(app);
-// --- End Firebase Initialization ---
-
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut, User as FirebaseUser, getAuth, Auth } from 'firebase/auth';
+import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
 
 // Mock user data including roles, this would come from your database in a real app
 const mockUsers: {[key: string]: AppUser} = {
@@ -72,6 +57,26 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<AppUser | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // --- Firebase Initialization ---
+  const firebaseConfig = {
+    apiKey: "AIzaSyB5xyxQ5twmeTqv0fblWIIogNRryyNdLkQ",
+    authDomain: "labtrack-ckpvl.firebaseapp.com",
+    projectId: "labtrack-ckpvl",
+    storageBucket: "labtrack-ckpvl.firebasestorage.app",
+    messagingSenderId: "264231788271",
+    appId: "1:264231788271:web:72ced018e71a5619a3851a",
+  };
+
+  let app: FirebaseApp;
+  if (!getApps().length) {
+    app = initializeApp(firebaseConfig);
+  } else {
+    app = getApp();
+  }
+  const auth = getAuth(app);
+  // --- End Firebase Initialization ---
+
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser: FirebaseUser | null) => {
       if (firebaseUser && firebaseUser.email && mockUsers[firebaseUser.email]) {
@@ -83,7 +88,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [auth]);
 
   const login = async (email: string, pass: string) => {
     try {
