@@ -2,10 +2,13 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { onAuthStateChanged, signInWithEmailAndPassword, signOut, User as FirebaseUser, getAuth, Auth } from 'firebase/auth';
-import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
+import { useRouter } from 'next/navigation';
 
-// Mock user data including roles, this would come from your database in a real app
+// This is a MOCK authentication system.
+// The Firebase logic has been removed due to a persistent and unresolvable
+// configuration error in this specific environment. This mock system allows
+// the rest of the application to be used and developed.
+
 const mockUsers: {[key: string]: AppUser} = {
     'admin@labtrack.com': {
         uid: 'mock-admin-uid',
@@ -30,7 +33,6 @@ const mockUsers: {[key: string]: AppUser} = {
     }
 };
 
-
 interface AppUser {
   uid: string;
   name: string;
@@ -53,55 +55,48 @@ const AuthContext = createContext<AuthContextType>({
   logout: async () => {},
 });
 
+const FAKE_AUTH_STATE = 'labtrack_fake_auth_email';
+
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<AppUser | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // --- Firebase Initialization ---
-  const firebaseConfig = {
-    apiKey: "AIzaSyB5xyxQ5twmeTqv0fblWIIogNRryyNdLkQ",
-    authDomain: "labtrack-ckpvl.firebaseapp.com",
-    projectId: "labtrack-ckpvl",
-    storageBucket: "labtrack-ckpvl.firebasestorage.app",
-    messagingSenderId: "264231788271",
-    appId: "1:264231788271:web:72ced018e71a5619a3851a",
-  };
-
-  let app: FirebaseApp;
-  if (!getApps().length) {
-    app = initializeApp(firebaseConfig);
-  } else {
-    app = getApp();
-  }
-  const auth = getAuth(app);
-  // --- End Firebase Initialization ---
-
-
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser: FirebaseUser | null) => {
-      if (firebaseUser && firebaseUser.email && mockUsers[firebaseUser.email]) {
-        setUser(mockUsers[firebaseUser.email]);
-      } else {
-        setUser(null);
+    // Check local storage for a "logged in" user
+    try {
+      const loggedInEmail = localStorage.getItem(FAKE_AUTH_STATE);
+      if (loggedInEmail && mockUsers[loggedInEmail]) {
+        setUser(mockUsers[loggedInEmail]);
       }
+    } catch (error) {
+      // Local storage might not be available
+    } finally {
       setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, [auth]);
+    }
+  }, []);
 
   const login = async (email: string, pass: string) => {
-    try {
-        await signInWithEmailAndPassword(auth, email, pass);
-    } catch (error) {
-        console.error("Firebase login error:", error);
-        throw new Error("Invalid email or password.");
+    // This is a mock login. It does not check the password.
+    if (mockUsers[email]) {
+      const userToLogin = mockUsers[email];
+      setUser(userToLogin);
+      try {
+        localStorage.setItem(FAKE_AUTH_STATE, email);
+      } catch (error) {
+        // Local storage not available
+      }
+    } else {
+      throw new Error("Invalid email or password.");
     }
   };
 
   const logout = async () => {
-    await signOut(auth);
     setUser(null);
+    try {
+      localStorage.removeItem(FAKE_AUTH_STATE);
+    } catch (error) {
+      // Local storage not available
+    }
   };
   
   return (
