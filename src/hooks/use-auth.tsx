@@ -2,9 +2,8 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { onAuthStateChanged, signInWithEmailAndPassword, signOut, User as FirebaseUser, getAuth } from 'firebase/auth';
-import { initializeApp, getApps, getApp } from 'firebase/app';
-import { auth as firebaseAuth } from '@/lib/firebase'; // Keep for onAuthStateChanged listener
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut, User as FirebaseUser } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
 
 // Mock user data including roles, this would come from your database in a real app
 const mockUsers: {[key: string]: AppUser} = {
@@ -59,8 +58,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // onAuthStateChanged should still work with the original auth object
-    const unsubscribe = onAuthStateChanged(firebaseAuth, (firebaseUser: FirebaseUser | null) => {
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser: FirebaseUser | null) => {
       if (firebaseUser && firebaseUser.email && mockUsers[firebaseUser.email]) {
         setUser(mockUsers[firebaseUser.email]);
       } else {
@@ -74,20 +72,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const login = async (email: string, pass: string) => {
     try {
-        // Direct initialization before use
-        const firebaseConfig = {
-          apiKey: "AIzaSyB5xyxQ5twmeTqv0fblWIIogNRryyNdLkQ",
-          authDomain: "labtrack-ckpvl.firebaseapp.com",
-          projectId: "labtrack-ckpvl",
-          storageBucket: "labtrack-ckpvl.firebasestorage.app",
-          messagingSenderId: "264231788271",
-          appId: "1:264231788271:web:72ced018e71a5619a3851a",
-        };
-        const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-        const auth = getAuth(app);
-        
         await signInWithEmailAndPassword(auth, email, pass);
-        // onAuthStateChanged will handle setting the user state and redirect
     } catch (error) {
         console.error("Firebase login error:", error);
         throw new Error("Invalid email or password.");
@@ -95,7 +80,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout = async () => {
-    await signOut(firebaseAuth);
+    await signOut(auth);
     setUser(null);
   };
   
