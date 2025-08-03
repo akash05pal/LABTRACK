@@ -10,9 +10,10 @@ interface InventoryViewProps {
   components: Component[];
   onEdit: (component: Component) => void;
   onDelete: (componentId: string) => void;
+  onUpdateQuantity: (componentId: string, newQuantity: number, reason: string, type: 'inward' | 'outward') => void;
 }
 
-export default function InventoryView({ components, onEdit, onDelete }: InventoryViewProps) {
+export default function InventoryView({ components, onEdit, onDelete, onUpdateQuantity }: InventoryViewProps) {
   const isMobile = useIsMobile();
   
   if (isMobile === undefined) {
@@ -27,8 +28,8 @@ export default function InventoryView({ components, onEdit, onDelete }: Inventor
   }
 
   return isMobile ? (
-    <ComponentCards components={components} onEdit={onEdit} onDelete={onDelete} />
+    <ComponentCards components={components} onEdit={onEdit} onDelete={onDelete} onUpdateQuantity={onUpdateQuantity} />
   ) : (
-    <ComponentTable components={components} onEdit={onEdit} onDelete={onDelete} />
+    <ComponentTable components={components} onEdit={onEdit} onDelete={onDelete} onUpdateQuantity={onUpdateQuantity} />
   );
 }

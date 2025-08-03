@@ -10,6 +10,7 @@ import type { Component, ComponentCategory } from '@/lib/types';
 import { Search } from 'lucide-react';
 import { AddComponentDialog } from '@/components/dashboard/add-component-dialog';
 import { EditComponentDialog } from '@/components/dashboard/edit-component-dialog';
+import { useToast } from '@/hooks/use-toast';
 
 const categories: ComponentCategory[] = ['Fencing', 'Gates', 'Hardware', 'Materials', 'Tools', 'Other'];
 const locations = Array.from(new Set(initialComponents.map(c => c.location)));
@@ -17,6 +18,7 @@ const locations = Array.from(new Set(initialComponents.map(c => c.location)));
 export default function ComponentsPage() {
   const [components, setComponents] = useState<Component[]>(initialComponents);
   const [editingComponent, setEditingComponent] = useState<Component | null>(null);
+  const { toast } = useToast();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
@@ -39,6 +41,24 @@ export default function ComponentsPage() {
   
   const handleDeleteComponent = (componentId: string) => {
     setComponents(prev => prev.filter(c => c.id !== componentId));
+  };
+  
+  const handleUpdateQuantity = (componentId: string, newQuantity: number, reason: string, type: 'inward' | 'outward') => {
+    setComponents(prev => prev.map(c => {
+      if (c.id === componentId) {
+        const updatedComponent = { ...c, quantity: newQuantity };
+        if (type === 'outward') {
+          updatedComponent.lastOutwardDate = new Date().toISOString();
+        }
+        return updatedComponent;
+      }
+      return c;
+    }));
+    toast({
+        title: `Stock ${type === 'inward' ? 'Added' : 'Issued'}`,
+        description: `Reason: ${reason}`,
+    });
+    // Here you would also add a new entry to your logs
   };
 
   const filteredComponents = useMemo(() => {
@@ -120,7 +140,8 @@ export default function ComponentsPage() {
         <InventoryView 
           components={filteredComponents} 
           onEdit={setEditingComponent} 
-          onDelete={handleDeleteComponent} 
+          onDelete={handleDeleteComponent}
+          onUpdateQuantity={handleUpdateQuantity}
         />
       </main>
       {editingComponent && (

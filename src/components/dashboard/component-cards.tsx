@@ -1,5 +1,5 @@
 
-import { MoreHorizontal, ExternalLink, FileText } from 'lucide-react';
+import { MoreHorizontal, ExternalLink, FileText, ArrowDown, ArrowUp } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -19,11 +19,14 @@ import {
 import type { Component } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
+import { useState } from 'react';
+import { InwardOutwardDialog } from './inward-outward-dialog';
 
 interface ComponentCardsProps {
   components: Component[];
   onEdit: (component: Component) => void;
   onDelete: (componentId: string) => void;
+  onUpdateQuantity: (componentId: string, newQuantity: number, reason: string, type: 'inward' | 'outward') => void;
 }
 
 function StockStatusBadge({ quantity, lowStockThreshold }: { quantity: number; lowStockThreshold: number }) {
@@ -36,8 +39,27 @@ function StockStatusBadge({ quantity, lowStockThreshold }: { quantity: number; l
   return <Badge variant="default" className="bg-green-500">In Stock</Badge>;
 }
 
-export default function ComponentCards({ components, onEdit, onDelete }: ComponentCardsProps) {
+export default function ComponentCards({ components, onEdit, onDelete, onUpdateQuantity }: ComponentCardsProps) {
+    const [dialogState, setDialogState] = useState<{ open: boolean; type: 'inward' | 'outward'; component: Component | null }>({ open: false, type: 'inward', component: null });
+
+    const handleOpenDialog = (type: 'inward' | 'outward', component: Component) => {
+        setDialogState({ open: true, type, component });
+    }
+
+    const handleCloseDialog = () => {
+        setDialogState({ open: false, type: 'inward', component: null });
+    }
+    
+    const handleSubmit = (quantity: number, reason: string) => {
+        if (dialogState.component) {
+            const newQuantity = dialogState.type === 'inward' 
+                ? dialogState.component.quantity + quantity
+                : dialogState.component.quantity - quantity;
+            onUpdateQuantity(dialogState.component.id, newQuantity, reason, dialogState.type);
+        }
+    }
   return (
+    <>
     <div className="grid gap-4 sm:grid-cols-2">
       {components.map((component) => (
         <Card key={component.id}>
@@ -97,11 +119,28 @@ export default function ComponentCards({ components, onEdit, onDelete }: Compone
               <span>{format(new Date(component.lastOutwardDate), 'MMM d, yyyy')}</span>
             </div>
           </CardContent>
-          <CardFooter>
+          <CardFooter className="flex justify-between">
             <StockStatusBadge quantity={component.quantity} lowStockThreshold={component.lowStockThreshold} />
+             <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" onClick={() => handleOpenDialog('outward', component)}>
+                    <ArrowDown className="h-3 w-3 mr-1" /> Issue
+                </Button>
+                <Button variant="outline" size="sm" onClick={() => handleOpenDialog('inward', component)}>
+                    <ArrowUp className="h-3 w-3 mr-1" /> Add
+                </Button>
+            </div>
           </CardFooter>
         </Card>
       ))}
     </div>
+    {dialogState.open && dialogState.component && (
+        <InwardOutwardDialog
+            type={dialogState.type}
+            component={dialogState.component}
+            onClose={handleCloseDialog}
+            onSubmit={handleSubmit}
+        />
+    )}
+    </>
   );
 }
