@@ -2,8 +2,23 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { onAuthStateChanged, signInWithEmailAndPassword, signOut, User as FirebaseUser } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut, User as FirebaseUser, getAuth } from 'firebase/auth';
+import { initializeApp, getApps, getApp } from 'firebase/app';
+
+// --- Firebase Initialization ---
+const firebaseConfig = {
+  apiKey: "AIzaSyB5xyxQ5twmeTqv0fblWIIogNRryyNdLkQ",
+  authDomain: "labtrack-ckpvl.firebaseapp.com",
+  projectId: "labtrack-ckpvl",
+  storageBucket: "labtrack-ckpvl.firebasestorage.app",
+  messagingSenderId: "264231788271",
+  appId: "1:264231788271:web:72ced018e71a5619a3851a",
+};
+
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+const auth = getAuth(app);
+// --- End Firebase Initialization ---
+
 
 // Mock user data including roles, this would come from your database in a real app
 const mockUsers: {[key: string]: AppUser} = {
